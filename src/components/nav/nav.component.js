@@ -13,14 +13,14 @@ const Nav = () => {
       </h1>
       <NavItem>
         <ul>
+
         <li>Profile</li>
-          { isConnectedToEthereum ? (
+          { isConnectedToEthereum  ? (
             <a  target="_blank" rel="noopener noreferrer" href={`https://etherscan.io/`} >
-              { `${accountDetails.substring(0, 10)}...` } 
+             { accountDetails ? `${accountDetails.substring(0, 10)}...` : <h1>{ accountDetails }</h1> }
             </a>) : (<li>Connect Wallet</li>)}
         </ul>
       </NavItem>
-
     </NavWrapper>
 
   )

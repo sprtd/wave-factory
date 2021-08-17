@@ -12,7 +12,6 @@ ReactDOM.render(
     <UserAccountContextProvider>
       <ContractContextProvider>
         <App />
-
       </ContractContextProvider>
     </UserAccountContextProvider>
   </React.StrictMode>,

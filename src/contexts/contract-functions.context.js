@@ -1,6 +1,6 @@
 import { useState, createContext } from "react";
 import { ethers } from "ethers";
-import WavePortal from '../artifacts/contracts/WavePortal.sol/WavePortal.json'
+import WavePortal from './wave-portal.json'
 
 export const ContractContext = createContext()
 

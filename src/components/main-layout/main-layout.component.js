@@ -8,9 +8,7 @@ const MainLayout = () => {
   const { isConnectedToEthereum, setIsConnectedToEthereum, setAccountProfile } = useContext(UserAccountContext)
   const { getWave, waveGlobalCount, sendWave } = useContext(ContractContext)
 
-  
   const connectToWeb3 = async() => {
-
     const { ethereum } = window
     if (ethereum) {
       try {
@@ -19,15 +17,10 @@ const MainLayout = () => {
       } catch(err) {
         console.log(err)
       }
-
     } else {
       console.log('nawa o')
     }
-   
-
   }
-
- 
 
   useEffect(() => {
     const requestAccount = async() => {
