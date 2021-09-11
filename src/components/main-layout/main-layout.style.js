@@ -9,6 +9,18 @@ const MainLayoutWrapper = styled.main`
   align-items: center;
 
   flex-direction: column;
+  box-sizing: border-box;
+
+  textarea {
+    width: 20%;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: -30px;
+
+
+  }
 
   button {
     width: 20%;
@@ -21,18 +33,14 @@ const MainLayoutWrapper = styled.main`
     border-radius: 5px;
     opacity: 0.8;
     transition: 0.4s;
-
     &:hover {
       opacity: 0.9
     }
 
   }
 
-
-
-
-
-
 `
+
+
 
 export { MainLayoutWrapper }

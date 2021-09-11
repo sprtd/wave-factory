@@ -21,8 +21,9 @@ const ContractContextProvider = ({ children }) => {
 
       try {
         const waveCount = await wavePortal.getTotalWaves()
-        setWaveGlobalCount(waveCount.toString())
-        console.log('this is the total waves', waveGlobalCount)
+        setWaveGlobalCount(waveCount.toNumber())
+        // console.log('this is the total number of counts so far', waveCount)
+        console.log('this is the total waves', waveCount.toNumber())
 
 
       } catch(err) {
