@@ -1,4 +1,4 @@
-import { MainLayoutWrapper, WaveWrapper } from "./main-layout.style"
+import { MainLayoutWrapper, StatusWrapper, WaveWrapper } from "./main-layout.style"
 import { ethers } from "ethers"
 import { useContext, useEffect, useState } from "react"
 import { UserAccountContext } from "../../contexts/user-account.context"
@@ -6,7 +6,7 @@ import { ContractContext } from "../../contexts/contract-functions.context"
 
 const MainLayout = () => {
   const { isConnectedToEthereum, setIsConnectedToEthereum, setAccountProfile } = useContext(UserAccountContext)
-  const {  getWave, waveGlobalCount, sendWave, getAllWaves, waveArray } = useContext(ContractContext)
+  const {  getWave, waveGlobalCount, sendWave, getAllWaves, waveArray, getContractETHBalance, contractBalance } = useContext(ContractContext)
 
   const [formEntry, setFormEntry] = useState('')
 
@@ -57,6 +57,7 @@ const MainLayout = () => {
         await setAccountProfile(account)
         getWave()
         getAllWaves()
+        getContractETHBalance()
       } catch(err) {
         console.log(err)
       }
@@ -72,8 +73,12 @@ const MainLayout = () => {
   return (
     <MainLayoutWrapper>
       <h1>Wave Portal Dapp </h1>
-      { waveGlobalCount > 0 ? <h2>Total Waves: { waveGlobalCount }</h2> : null}
-      <textarea onChange={e => setFormEntry(e.target.value)} value={ formEntry } placeholder='Leave message...' rows='4' />
+      <StatusWrapper>
+        <h4 style={{textAlign: 'left'}}>ETH Balance: { contractBalance ? `${contractBalance}ETH` : null } </h4>
+        { waveGlobalCount > 0 ? <h4>Total Waves: { waveGlobalCount }</h4> : null}
+      </StatusWrapper>
+      
+      <textarea onChange={e => setFormEntry(e.target.value)} value={ formEntry } placeholder='Leave your message here...' rows='4' />
       { isConnectedToEthereum ? <button onClick={ handleSubmit }>Wave at me! 👋</button> : <button onClick={ connectToWeb3 }> Connect Wallet</button> } 
 
       {waveArray ? waveArray.map((wave, index) => {

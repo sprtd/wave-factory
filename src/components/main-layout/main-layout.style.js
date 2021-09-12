@@ -12,12 +12,20 @@ const MainLayoutWrapper = styled.main`
   flex-direction: column;
   box-sizing: border-box;
 
+  h4 {
+    text-align: left;
+    margin-bottom: -4px;
+    display: flex;
+    justify-content: space-between;
+  }
+
   textarea {
     width: 40%;
     border-radius: 5px;
     font-size: 20px;
     padding: 10px;
     box-sizing: border-box;
+    margin-top: 10px;
     margin-bottom: -30px;
 
 
@@ -42,6 +50,14 @@ const MainLayoutWrapper = styled.main`
     
   }
   
+`
+const StatusWrapper = styled.div`
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #1e824c;
+
 `
 
 const WaveWrapper = styled.div`
@@ -70,4 +86,4 @@ const WaveWrapper = styled.div`
 `
 
 
-export { MainLayoutWrapper, WaveWrapper }
+export { MainLayoutWrapper, WaveWrapper, StatusWrapper }

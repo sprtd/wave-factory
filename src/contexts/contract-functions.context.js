@@ -1,17 +1,19 @@
 import { useState, createContext } from "react";
 import { ethers } from "ethers";
 import WavePortal from '../artifacts/contracts/WavePortal.sol/WavePortal.json'
+import { formatEther } from "@ethersproject/units";
 
 export const ContractContext = createContext()
 
 const ContractContextProvider = ({ children }) => {
   // const waveContractAddress = '0x3c610d9e5ca31df5b69a3d30265658e6fa823186'
-  const waveContractAddress = '0x382f72CfdAf0c1326e00103F9b3069A9C99dcC62'
+  const waveContractAddress = '0x7a781686491B7a0Df9AcbB278fbF5770bDDA3BB9'
 
   let initialCount
   
   const [ waveGlobalCount, setWaveGlobalCount ] = useState(initialCount)
   const [waveArray, setWaveArray] = useState('')
+  const [contractBalance, setContractBalance] = useState('')
 
   const { ethereum } = window
   const provider = new ethers.providers.Web3Provider(ethereum)
@@ -19,15 +21,13 @@ const ContractContextProvider = ({ children }) => {
 
 
 
-
   
- 
+  
+  // fetch all waves
   const getAllWaves = async() => {
 
     try {
       const fetchedWaves = await wavePortal.getAllWaves()
-      console.log('fetched waves', fetchedWaves)
-
       let sanitizedWaves = []
       fetchedWaves.forEach(wave => {
         const { message, waver, timestamp} = wave
@@ -39,6 +39,18 @@ const ContractContextProvider = ({ children }) => {
       console.log(err)
     }
     
+  }
+
+  const getContractETHBalance = async() => {
+    try{
+
+      const fetchedETHBalance = await wavePortal.getContractBalance()
+      const formattedContractBalance = formatEther(fetchedETHBalance)
+      // console.log('test from context',formatEther(fetchedETHBalance))
+      setContractBalance(formattedContractBalance)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   // get total number of wave count
@@ -85,6 +97,7 @@ const ContractContextProvider = ({ children }) => {
 
   }
 
+  // send new wave transaction
   const sendWave = async(payload) => {
     if(ethereum) {
       await requestAccount()
@@ -119,7 +132,7 @@ const ContractContextProvider = ({ children }) => {
 
 
   return (
-    <ContractContext.Provider  value={{ getWave, waveGlobalCount, sendWave, getAllWaves, waveArray }}>
+    <ContractContext.Provider  value={{ getWave, waveGlobalCount, sendWave, getAllWaves, waveArray, getContractETHBalance, contractBalance }}>
       { children }
     </ContractContext.Provider>
   )

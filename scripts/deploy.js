@@ -3,12 +3,15 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+const { parseEther } = require("@ethersproject/units");
+const { ethers } = require("ethers");
 const hre = require("hardhat");
 
 async function main() {
   const WavePortal = await hre.ethers.getContractFactory('WavePortal');
+
   
-  const waveContract = await WavePortal.deploy()
+  const waveContract = await WavePortal.deploy({ value: parseEther('0.1')})
 
   await waveContract.deployed()
 

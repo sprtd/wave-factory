@@ -42,6 +42,7 @@ const NavItem = styled.nav`
 
         &:nth-child(2) {
           background: #a4b0be;
+
           opacity: 0.8;
           padding: 5px;
           border-radius: 5px;
@@ -62,12 +63,14 @@ const NavItem = styled.nav`
       a {
         margin-right: 50px;
         text-decoration: none;
-        background: #a4b0be;
+        color: #1e824c;
+        background: #86e2d5;
+
+
         padding: 5px 10px;
         border-radius: 6px;
 
 
-        color: #fff;
         font-size: 24px;
         &:hover {
           opacity: 0.9;

@@ -1,3 +1,4 @@
+const { parseEther, formatEther } = require('@ethersproject/units')
 const { expect, assert } = require('chai')
 
 describe('Wave', () => {
@@ -5,7 +6,7 @@ describe('Wave', () => {
 
   beforeEach(async() => {
     WaveFactory = await ethers.getContractFactory('WavePortal')
-    waveContract = await WaveFactory.deploy();
+    waveContract = await WaveFactory.deploy({value: parseEther('200')});
 
     [ owner, addr1, addr2 ] = await ethers.getSigners()
 
@@ -38,6 +39,33 @@ describe('Wave', () => {
 
       assert.equal(waveMessage, setMessage)
       assert(waver, owner)
+    })
+
+    it('Pays out ETH to wavers after successful wave', async() => {
+      const contractBalBeforeWave = await waveContract.getContractBalance();
+      const addr1BalBeforeWave = await waveContract.getEOABalance();
+      
+      const formatedContractBalance1 = formatEther(contractBalBeforeWave)
+      console.log('omo contract', formatedContractBalance1)
+      
+      const formatedAddr1BalBeforeWave= formatEther(addr1BalBeforeWave)
+      console.log('EOA balance:', formatedAddr1BalBeforeWave)
+      
+      const msg1 = 'Test mode'
+      
+      const waveTxn = await waveContract.connect(addr1).wave(msg1)
+
+      await waveTxn.wait()
+      
+      const contractBalanceAfterWave = await waveContract.getContractBalance();
+      const formatedContractBalance2 = formatEther(contractBalanceAfterWave)
+
+      const addr1BalanceAfterWave = await waveContract.getEOABalance();
+      const formatedAddr1AfterWave = formatEther(addr1BalanceAfterWave)
+      assert.equal(formatedAddr1AfterWave, formatedAddr1BalBeforeWave + 20, 'one')
+
+      assert.equal(formatedContractBalance2, formatedContractBalance1 - 20, 'two' )
+
     })
 
 

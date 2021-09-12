@@ -1,1 +1,1 @@
-# Wave Factory Dapp
+# Wave Portal Dapp

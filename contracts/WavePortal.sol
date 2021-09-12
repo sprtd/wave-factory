@@ -20,9 +20,8 @@ contract WavePortal {
   event NewWave(address indexed from, string message, uint timestamp);
 
 
-  constructor() {
-    console.log("this is wave portal contract", address(this));
-    // waveCount = 0;
+  constructor() payable {
+    console.log("%s - wave portal ETH balance", address(this).balance);
   }
   
 
@@ -39,7 +38,16 @@ contract WavePortal {
     waveCount ++;
     console.log('%s is the waver', msg.sender);
     emit NewWave(newWave.waver, newWave.message, newWave.timestamp);
-    // console.log("%s - waver, %s - message, %s - timestamp", newWave.waver, newWave.message, newWave.timestamp);
+
+    uint rewardAmount = 0.0001 ether;
+
+    require(rewardAmount <= address(this).balance, 'Available ETH balance in contract lower than reward amount');
+    (bool success, ) = msg.sender.call{value: rewardAmount}('');
+    require(success, 'Failed to ');
+
+    if(address(this).balance < rewardAmount) {
+      revert('ETH bal below benchmark');
+    }
     
   }
   function getAllWaves() public view returns(Wave[] memory)  {
@@ -62,6 +70,16 @@ contract WavePortal {
     _timestamp = newWave.timestamp;
     // return(newWave.message, newWave.waver, newWave.timestamp);
 
+  }
+
+
+  function getContractBalance() public view returns(uint contractETHBalance) {
+    contractETHBalance = address(this).balance;
+  }
+
+
+  function getEOABalance() public view returns(uint EOABalance) {
+    EOABalance = msg.sender.balance;
   }
 
 
