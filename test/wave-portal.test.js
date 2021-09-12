@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const { expect, assert } = require('chai')
 
 describe('Wave', () => {
   let WaveFactory, waveContract, owner, addr1, addr2
@@ -12,27 +12,47 @@ describe('Wave', () => {
   })
 
   describe('Deployment', () => {
-    let initialWaveCount, finalWaveCount
+    let initialWaveCount
     it('Should have initial value of zero after deployment', async() => {
-      initialWaveCount = await waveContract.getTotalWaves()
+      initialWaveCount = await waveContract.getWaveCount()
       expect(initialWaveCount.toString()).to.equal('0')
     })
+  })
 
-    it('Should increase the value of totalWaves by 1 after waving', async() => {
-      const waveTxn = await waveContract.connect(addr1).wave()
+
+  describe('Wave Transaction', () => {
+    let setMessage = 'Alpha'
+
+    it('Accepts message entry, updates the state of wave and returns wave metadata ', async() => {
+
+      const waveTxn = await waveContract.connect(owner).wave(setMessage)
       await waveTxn.wait()
+      const waveCount = await waveContract.getWaveCount()
 
-      const waveTxn2 = await waveContract.connect(addr2).wave()
-      await waveTxn2.wait()
+      const getWaveInfo = await waveContract.getWaveInfo(waveCount - 1)
+      const waveMessage = getWaveInfo._message
+      const waver = getWaveInfo._waver
+
+      const timestamp = getWaveInfo._timestamp
+      console.log('this is the timestamp', timestamp.toNumber())
+
+      assert.equal(waveMessage, setMessage)
+      assert(waver, owner)
+    })
+
+
+
+    it('Increases wave count after each wave', async() => {
+      const waveCount1 = await waveContract.getWaveCount()
+      console.log('test wave count 3', waveCount1.toNumber())
       
-      const waveTxn3 = await waveContract.connect(addr2).wave()
-      await waveTxn3.wait()
+      const setMessage = 'Alpha 2'
+      const waveTxn = await waveContract.connect(addr1).wave(setMessage)
+      await waveTxn.wait()
+      const waveCount2 = await waveContract.getWaveCount()
+      assert.equal(waveCount2.toNumber(), waveCount1.toNumber() + 1)
+    })
 
-      
-
-      finalWaveCount = await waveContract.getTotalWaves()
-      expect(finalWaveCount).to.equal(initialWaveCount + 3)
-    } )
   })
 
 

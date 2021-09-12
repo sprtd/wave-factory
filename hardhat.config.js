@@ -24,6 +24,10 @@ module.exports = {
     artifacts: './src/artifacts'
   },
   networks: {
+    hardhat: {
+      chainId: 1337
+
+    },
     rinkeby: {
       url: process.env.RINKEBY_URI,
       accounts: [`0x${process.env.P_KEY}`]

@@ -9,7 +9,7 @@ const Nav = () => {
   return (
     <NavWrapper>
       <h1>
-        <Link to='/'>WaveFactory</Link>
+        <Link to='/'>WavePortal</Link>
       </h1>
       <NavItem>
         <ul>
