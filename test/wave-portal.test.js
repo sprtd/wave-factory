@@ -6,7 +6,7 @@ describe('Wave', () => {
 
   beforeEach(async() => {
     WaveFactory = await ethers.getContractFactory('WavePortal')
-    waveContract = await WaveFactory.deploy({value: parseEther('200')});
+    waveContract = await WaveFactory.deploy({value: parseEther('50')});
 
     [ owner, addr1, addr2 ] = await ethers.getSigners()
 
@@ -41,33 +41,7 @@ describe('Wave', () => {
       assert(waver, owner)
     })
 
-    it('Pays out ETH to wavers after successful wave', async() => {
-      const contractBalBeforeWave = await waveContract.getContractBalance();
-      const addr1BalBeforeWave = await waveContract.getEOABalance();
-      
-      const formatedContractBalance1 = formatEther(contractBalBeforeWave)
-      console.log('omo contract', formatedContractBalance1)
-      
-      const formatedAddr1BalBeforeWave= formatEther(addr1BalBeforeWave)
-      console.log('EOA balance:', formatedAddr1BalBeforeWave)
-      
-      const msg1 = 'Test mode'
-      
-      const waveTxn = await waveContract.connect(addr1).wave(msg1)
-
-      await waveTxn.wait()
-      
-      const contractBalanceAfterWave = await waveContract.getContractBalance();
-      const formatedContractBalance2 = formatEther(contractBalanceAfterWave)
-
-      const addr1BalanceAfterWave = await waveContract.getEOABalance();
-      const formatedAddr1AfterWave = formatEther(addr1BalanceAfterWave)
-      assert.equal(formatedAddr1AfterWave, formatedAddr1BalBeforeWave + 20, 'one')
-
-      assert.equal(formatedContractBalance2, formatedContractBalance1 - 20, 'two' )
-
-    })
-
+   
 
 
     it('Increases wave count after each wave', async() => {
@@ -80,6 +54,41 @@ describe('Wave', () => {
       const waveCount2 = await waveContract.getWaveCount()
       assert.equal(waveCount2.toNumber(), waveCount1.toNumber() + 1)
     })
+
+
+    it('Pays out ETH to wavers after successful wave', async() => {
+      const contractBalBeforeWave = await waveContract.getContractBalance();
+      const addr1BalBeforeWave = await waveContract.getEOABalance();
+      
+      const formatedContractBalance1 = formatEther(contractBalBeforeWave)
+      console.log('contract balance', formatedContractBalance1)
+
+      
+      
+      const formatedAddr1BalBeforeWave = formatEther(addr1BalBeforeWave)
+      console.log('EOA balance:', formatedAddr1BalBeforeWave)
+      
+      const msg1 = 'Test mode'
+      
+      const waveTxn1 = await waveContract.connect(addr1).wave(msg1)
+      
+      await waveTxn1.wait()
+      
+      const waveTxn2 = await waveContract.connect(addr1).wave(msg1)
+      await waveTxn2.wait()
+
+
+      const contractBalanceAfterWave = await waveContract.getContractBalance();
+      const formatedContractBalance2 = formatEther(contractBalanceAfterWave)
+
+      const addr1BalanceAfterWave = await waveContract.getEOABalance();
+      const formatedAddr1AfterWave = formatEther(addr1BalanceAfterWave)
+      assert.equal(formatedAddr1AfterWave, formatedAddr1BalBeforeWave + 20, 'one')
+
+      assert.equal(formatedContractBalance2, formatedContractBalance1 - 20, 'two' )
+
+    })
+
 
   })
 

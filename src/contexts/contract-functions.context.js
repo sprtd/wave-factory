@@ -6,8 +6,9 @@ import { formatEther } from "@ethersproject/units";
 export const ContractContext = createContext()
 
 const ContractContextProvider = ({ children }) => {
-  // const waveContractAddress = '0x3c610d9e5ca31df5b69a3d30265658e6fa823186'
-  const waveContractAddress = '0x7a781686491B7a0Df9AcbB278fbF5770bDDA3BB9'
+  // const waveContractAddress = '0x7a781686491B7a0Df9AcbB278fbF5770bDDA3BB9' // 0.099ETH available
+  // const waveContract2 = '0xb9D2f1d8f3a049B78Dff63D38bd43Acf1755c533' 0.1ETH 
+  const waveContractAddress = '0xB2B75ff2367eFba6E5deC30B33d6808910786b21' // 0.099ETH available
 
   let initialCount
   
@@ -112,7 +113,7 @@ const ContractContextProvider = ({ children }) => {
      
 
       try {
-        const wave = await wavePortal.wave(payload)
+        const wave = await wavePortal.wave(payload, { gasLimit: 280000 })
         const waveTxn = await wave.wait()
         if(waveTxn) {
           getWave()

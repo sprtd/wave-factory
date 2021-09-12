@@ -79,13 +79,13 @@ const MainLayout = () => {
       </StatusWrapper>
       
       <textarea onChange={e => setFormEntry(e.target.value)} value={ formEntry } placeholder='Leave your message here...' rows='4' />
-      { isConnectedToEthereum ? <button onClick={ handleSubmit }>Wave at me! 👋</button> : <button onClick={ connectToWeb3 }> Connect Wallet</button> } 
+    { isConnectedToEthereum ? <button onClick={ handleSubmit }>Wave at me! 👋</button> : <button onClick={ connectToWeb3 }> Connect Wallet</button> } 
 
       {waveArray ? waveArray.map((wave, index) => {
         const {message, timestamp, waver} = wave
         return (
           <WaveWrapper key={index}>
-            <span>Message: { message }</span>
+            <span>Message: { message.toUpperCase() }</span>
             <span>Waver: { waver }</span>
             <span>Time Waved: { Date(timestamp) }</span>
 

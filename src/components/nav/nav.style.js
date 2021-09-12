@@ -65,6 +65,7 @@ const NavItem = styled.nav`
         text-decoration: none;
         color: #1e824c;
         background: #86e2d5;
+        
 
 
         padding: 5px 10px;
